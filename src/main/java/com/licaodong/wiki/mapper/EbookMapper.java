@@ -2,8 +2,9 @@ package com.licaodong.wiki.mapper;
 
 import com.licaodong.wiki.domain.Ebook;
 import com.licaodong.wiki.domain.EbookExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface EbookMapper {
     long countByExample(EbookExample example);
