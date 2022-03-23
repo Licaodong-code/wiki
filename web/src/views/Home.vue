@@ -46,13 +46,15 @@
       </a-menu>
     </a-layout-sider>
     <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
-      Content
+      <pre>
+        {{ebooks1}}
+      </pre>
     </a-layout-content>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref, reactive, toRef } from 'vue';
 import axios from 'axios';
 import defaultProps from "ant-design-vue/es/vc-slick/src/default-props";
 import responsive = defaultProps.responsive;
@@ -60,12 +62,24 @@ import responsive = defaultProps.responsive;
 
 export default defineComponent({
   name: 'Home',
-  setup(){
+  setup() {
     console.log("setup");
-    axios.get("http://localhost:8088/ebook/list?name=Spring").then((response: string) => {
-      console.log(response);
+    const ebooks = ref();
+    const ebooks1 = reactive({books: []});
+    onMounted(()=>{
+      console.log("onMounted");
+      axios.get("http://localhost:8088/ebook/list?name=Spring").then((response) => {
+        const data = response.data;
+        ebooks.value = data.content;
+        ebooks1.books = data.content;
+        console.log(response);
+      })
     })
 
+    return{
+      ebooks,
+      ebooks1: toRef(ebooks1, "books")
+    }
   }
 });
 </script>
