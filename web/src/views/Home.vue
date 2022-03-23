@@ -53,10 +53,19 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import axios from 'axios';
+import defaultProps from "ant-design-vue/es/vc-slick/src/default-props";
+import responsive = defaultProps.responsive;
 
 
 export default defineComponent({
   name: 'Home',
+  setup(){
+    console.log("setup");
+    axios.get("http://localhost:8088/ebook/list?name=Spring").then((response: string) => {
+      console.log(response);
+    })
 
+  }
 });
 </script>
