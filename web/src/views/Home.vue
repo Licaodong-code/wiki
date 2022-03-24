@@ -104,27 +104,19 @@ export default defineComponent({
   //   MessageOutlined,
   // },
   setup() {
-    console.log("setup");
     const ebooks = ref();
     const ebooks1 = reactive({books: []});
-    const pagination = {
-      onChange: (page: number) => {
-        console.log(page);
-      },
-      pageSize: 3,
-    };
+
     const actions: Record<string, string>[] = [
       { type: 'StarOutlined', text: '156' },
       { type: 'LikeOutlined', text: '156' },
       { type: 'MessageOutlined', text: '2' },
     ];
     onMounted(()=>{
-      console.log("onMounted");
       axios.get("/ebook/list").then((response) => {
         const data = response.data;
         ebooks.value = data.content;
         // ebooks1.books = data.content;
-        console.log(response);
       })
     })
 
