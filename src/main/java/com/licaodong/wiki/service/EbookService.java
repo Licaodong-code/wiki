@@ -5,14 +5,14 @@ import com.github.pagehelper.PageInfo;
 import com.licaodong.wiki.domain.Ebook;
 import com.licaodong.wiki.domain.EbookExample;
 import com.licaodong.wiki.mapper.EbookMapper;
-import com.licaodong.wiki.resp.EbookResp;
+import com.licaodong.wiki.resp.EbookQueryResp;
 import com.licaodong.wiki.resp.PageResp;
 import com.licaodong.wiki.utils.CopyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import req.EbookReq;
+import com.licaodong.wiki.req.EbookQueryReq;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,15 +25,15 @@ public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
 
-    public PageResp<EbookResp> list(EbookReq ebookReq) {
+    public PageResp<EbookQueryResp> list(EbookQueryReq ebookQueryReq) {
 
 
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
-        if(!ObjectUtils.isEmpty(ebookReq.getName())){
-            criteria.andNameLike("%" + ebookReq.getName() + "%");
+        if(!ObjectUtils.isEmpty(ebookQueryReq.getName())){
+            criteria.andNameLike("%" + ebookQueryReq.getName() + "%");
         }
-        PageHelper.startPage(ebookReq.getPage(),ebookReq.getSize());
+        PageHelper.startPage(ebookQueryReq.getPage(), ebookQueryReq.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 //        ArrayList<EbookResp> respList = new ArrayList<>();
 //        for (Ebook ebook : ebookList) {
@@ -44,15 +44,15 @@ public class EbookService {
 //            respList.add(ebookResp);
 //        }
 //        return respList;
-        List<EbookResp> ebookResps = CopyUtil.copyList(ebookList, EbookResp.class);
+        List<EbookQueryResp> ebookQueryResps = CopyUtil.copyList(ebookList, EbookQueryResp.class);
 
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
         LOG.info("总行数：{}", pageInfo.getTotal());
         LOG.info("总页数：{}", pageInfo.getPages());
 
-        PageResp<EbookResp> pageResp = new PageResp<>();
+        PageResp<EbookQueryResp> pageResp = new PageResp<>();
         pageResp.setTotal(pageInfo.getTotal());
-        pageResp.setList(ebookResps);
+        pageResp.setList(ebookQueryResps);
 
         return pageResp;
     }

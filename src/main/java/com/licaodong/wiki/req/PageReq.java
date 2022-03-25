@@ -1,4 +1,4 @@
-package req;
+package com.licaodong.wiki.req;
 
 //import javax.validation.constraints.Max;
 //import javax.validation.constraints.NotNull;
