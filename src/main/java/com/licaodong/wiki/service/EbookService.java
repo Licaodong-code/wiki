@@ -5,6 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.licaodong.wiki.domain.Ebook;
 import com.licaodong.wiki.domain.EbookExample;
 import com.licaodong.wiki.mapper.EbookMapper;
+import com.licaodong.wiki.req.EbookQueryReq;
+import com.licaodong.wiki.req.EbookSaveReq;
 import com.licaodong.wiki.resp.EbookQueryResp;
 import com.licaodong.wiki.resp.PageResp;
 import com.licaodong.wiki.utils.CopyUtil;
@@ -12,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import com.licaodong.wiki.req.EbookQueryReq;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -56,4 +57,20 @@ public class EbookService {
 
         return pageResp;
     }
+
+    /**
+     * 保存
+     */
+    public void save(EbookSaveReq req) {
+        Ebook ebook = CopyUtil.copy(req, Ebook.class);
+        if (ObjectUtils.isEmpty(req.getId())) {
+            // 新增
+            ebookMapper.insert(ebook);
+        } else {
+            // 更新
+            ebookMapper.updateByPrimaryKey(ebook);
+        }
+    }
+
+
 }

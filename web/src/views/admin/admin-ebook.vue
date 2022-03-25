@@ -149,15 +149,25 @@ export default defineComponent({
       });
     };
 
+    // 表单
     const ebook = ref();
     const modalVisible = ref(false);
     const modalLoading = ref(false);
     const handleModalOk = () => {
       modalLoading.value = true;
-      setTimeout(() => {
-        modalVisible.value = false;
+      axios.post("/ebook/save", ebook.value).then((response) => {
         modalLoading.value = false;
-      }, 2000);
+        const data = response.data; // data = commonResp
+        if (data.success) {
+          modalVisible.value = false;
+
+          // 重新加载列表
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize,
+          });
+        }
+      });
     };
 
     const edit = (record: any) => {

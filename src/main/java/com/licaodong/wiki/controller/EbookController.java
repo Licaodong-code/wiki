@@ -1,13 +1,12 @@
 package com.licaodong.wiki.controller;
 
+import com.licaodong.wiki.req.EbookQueryReq;
+import com.licaodong.wiki.req.EbookSaveReq;
 import com.licaodong.wiki.resp.CommonResp;
 import com.licaodong.wiki.resp.EbookQueryResp;
 import com.licaodong.wiki.resp.PageResp;
 import com.licaodong.wiki.service.EbookService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.licaodong.wiki.req.EbookQueryReq;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -23,6 +22,13 @@ public class EbookController {
         CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
         PageResp<EbookQueryResp> pageResp = ebookService.list(ebookQueryReq);
         resp.setContent(pageResp);
+        return resp;
+    }
+
+    @PostMapping("/save")
+    public CommonResp save(@RequestBody EbookSaveReq req) {
+        CommonResp resp = new CommonResp<>();
+        ebookService.save(req);
         return resp;
     }
 }
