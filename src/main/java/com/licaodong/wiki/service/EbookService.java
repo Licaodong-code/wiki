@@ -6,6 +6,7 @@ import com.licaodong.wiki.domain.Ebook;
 import com.licaodong.wiki.domain.EbookExample;
 import com.licaodong.wiki.mapper.EbookMapper;
 import com.licaodong.wiki.resp.EbookResp;
+import com.licaodong.wiki.resp.PageResp;
 import com.licaodong.wiki.utils.CopyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
 
-    public List<EbookResp> list(EbookReq ebookReq) {
+    public PageResp<EbookResp> list(EbookReq ebookReq) {
 
 
         EbookExample ebookExample = new EbookExample();
@@ -32,7 +33,7 @@ public class EbookService {
         if(!ObjectUtils.isEmpty(ebookReq.getName())){
             criteria.andNameLike("%" + ebookReq.getName() + "%");
         }
-        PageHelper.startPage(1,3);
+        PageHelper.startPage(ebookReq.getPage(),ebookReq.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 //        ArrayList<EbookResp> respList = new ArrayList<>();
 //        for (Ebook ebook : ebookList) {
@@ -49,6 +50,10 @@ public class EbookService {
         LOG.info("总行数：{}", pageInfo.getTotal());
         LOG.info("总页数：{}", pageInfo.getPages());
 
-        return ebookResps;
+        PageResp<EbookResp> pageResp = new PageResp<>();
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(ebookResps);
+
+        return pageResp;
     }
 }
