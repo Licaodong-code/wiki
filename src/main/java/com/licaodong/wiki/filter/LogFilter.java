@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package com.licaodong.wiki.filter;
+=======
+package com.licaodong.wiki.filter;// package com.jiawa.wiki.filter;
+>>>>>>> origin/master
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
