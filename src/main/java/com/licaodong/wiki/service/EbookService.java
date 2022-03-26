@@ -10,6 +10,7 @@ import com.licaodong.wiki.req.EbookSaveReq;
 import com.licaodong.wiki.resp.EbookQueryResp;
 import com.licaodong.wiki.resp.PageResp;
 import com.licaodong.wiki.utils.CopyUtil;
+import com.licaodong.wiki.utils.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class EbookService {
 
     @Resource
     private EbookMapper ebookMapper;
+
+    @Resource
+    private SnowFlake snowFlake;
 
     public PageResp<EbookQueryResp> list(EbookQueryReq ebookQueryReq) {
 
@@ -65,7 +69,13 @@ public class EbookService {
         Ebook ebook = CopyUtil.copy(req, Ebook.class);
         if (ObjectUtils.isEmpty(req.getId())) {
             // 新增
+            long id = snowFlake.nextId();
+            ebook.setId(id);
+            ebook.setDocCount(1);
+            ebook.setViewCount(1);
+            ebook.setVoteCount(1);
             ebookMapper.insert(ebook);
+
         } else {
             // 更新
             ebookMapper.updateByPrimaryKey(ebook);
