@@ -179,13 +179,16 @@ export default defineComponent({
         const data = response.data; // data = commonResp
         if (data.success) {
           modalVisible.value = false;
-
           // 重新加载列表
           handleQuery({
             page: pagination.value.current,
             size: pagination.value.pageSize,
           });
+        }else {
+          message.error(data.message);
         }
+
+
       });
     };
 
