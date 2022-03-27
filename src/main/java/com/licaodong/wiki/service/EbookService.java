@@ -70,6 +70,8 @@ public class EbookService {
         if (ObjectUtils.isEmpty(req.getId())) {
             // 新增
             long id = snowFlake.nextId();
+            id >>= 10;
+            // Long类型与前端的Number的精度问题会导致id不一致现象
             ebook.setId(id);
             ebook.setDocCount(1);
             ebook.setViewCount(1);
@@ -80,6 +82,10 @@ public class EbookService {
             // 更新
             ebookMapper.updateByPrimaryKey(ebook);
         }
+    }
+
+    public void delete(Long id) {
+        ebookMapper.deleteByPrimaryKey(id);
     }
 
 
